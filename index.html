@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>My Portfolio</title>
+    <style>
+        .main {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="loading">
+
+        Loading.....
+
+    </div>
+    
+    <div class= "main" id = "mainContainer" hidden> 
+
+        <img 
+            height="100"
+            width="100"
+            id="profileImage"
+        >
+        <h2 id="fullName"></h2>
+        <p id="bio"></p>
+        <h5 id="followingInformation"></h5>
+        <p>
+            Check me on <a id="githubLink">Github</a>
+        </p>
+        <a class="twitter-timeline" data-width="300" data-height="400" href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw">Tweets by TwitterDev</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        
+    </div>
+
+    <div id = "myProjects"  class= "main" >
+
+        <h2>My Projects</h2>
+        <div id = "repo"></div>
+      
+    </div>
+    
+<script>
+        
+         fetch("https://api.github.com/users/RuchiJ-sudo")
+        .then(response => response.json())
+        .then(function(data){
+            console.log(data)
+
+            let followingCount = data['following']
+            
+            let followingInfo = `I am following ${followingCount} awesome people on Github`
+
+            document.getElementById('profileImage').src = data['avatar_url']
+            document.getElementById('fullName').textContent = data['name']
+            document.getElementById('bio').textContent = data['bio']
+
+            document.getElementById('followingInformation').textContent = followingInfo
+            
+
+            document.getElementById('githubLink').href = data['html_url']
+
+            document.getElementById('mainContainer').hidden = false
+            document.getElementById('loading').hidden = true
+
+
+        })
+
+        fetch("https://api.github.com/users/RuchiJ-sudo/repos")
+        .then((response) => response.json())
+        .then(function(data) {
+
+            console.log(data)
+            let m = data.length;
+            var n = parseInt(m);
+            let repoName = "";
+
+            for(i=0;i<n;i++)
+             {
+             repoName+= "Repo" + i + " " + data[i]['name'] + " <br>" + "<br>";
+             }   
+
+            document.getElementById('repo').innerHTML = repoName
+        
+        
+        });
+
+</script>
+</body>
+</html>
